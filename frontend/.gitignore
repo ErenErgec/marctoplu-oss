@@ -1,0 +1,6 @@
+# Vercel CLI proje bağlantısı (vercel link)
+.vercel
+
+# Yerel ortam dosyaları; örnek dosyalar repoda kalır
+.env*
+!.env*.example

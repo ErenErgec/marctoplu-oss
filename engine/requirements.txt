@@ -1,0 +1,8 @@
+# MARC Toplu Sorgulama Motoru — Python bağımlılıkları
+# Kurulum: pip install -r engine/requirements.txt
+
+# Excel okuma/yazma
+openpyxl==3.1.2
+
+# HTTP istekleri — stdlib urllib kullanılır, isteğe bağlı daha hızlı alternatif:
+# requests>=2.31.0

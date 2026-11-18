@@ -1,0 +1,105 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: marctoplu_caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      - DOMAIN=${DOMAIN:-marctoplu.com}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@marctoplu.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - marcnet
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: marctoplu_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-marctoken}
+      POSTGRES_USER: ${POSTGRES_USER:-marcuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set strong postgres password}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-marcuser} -d ${POSTGRES_DB:-marctoken}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - marcnet
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/MarcToken.Api/Dockerfile
+    container_name: marctoplu_backend
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=${POSTGRES_DB:-marctoken};Username=${POSTGRES_USER:-marcuser};Password=${POSTGRES_PASSWORD}
+      - App__FrontendUrl=https://${DOMAIN:-marctoplu.com}
+      - App__PythonExecutable=python3
+      - App__AdminEmails=${ADMIN_EMAILS:-}
+      - Firebase__ProjectId=${FIREBASE_PROJECT_ID:-marctoplu}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/serviceAccountKey.json
+      # iyzico opsiyoneldir (Tanımlanmadığında API sorunsuz başlar)
+      - Iyzico__ApiKey=${IYZICO_API_KEY:-}
+      - Iyzico__SecretKey=${IYZICO_SECRET_KEY:-}
+      - Iyzico__BaseUrl=${IYZICO_BASE_URL:-https://api.iyzipay.com}
+      - Iyzico__CallbackUrl=${IYZICO_CALLBACK_URL:-}
+      # Uygulama içi satın alma doğrulaması (zorunlu: eksikse satın almalar reddedilir)
+      - Iap__GoogleServiceAccountPath=${IAP_GOOGLE_SERVICE_ACCOUNT_PATH:-/app/secrets/play-service-account.json}
+      - Iap__AppleIssuerId=${IAP_APPLE_ISSUER_ID:-}
+      - Iap__AppleKeyId=${IAP_APPLE_KEY_ID:-}
+      - Iap__ApplePrivateKeyPath=${IAP_APPLE_PRIVATE_KEY_PATH:-/app/secrets/apple-iap-key.p8}
+      - Iap__AppleAllowSandbox=${IAP_APPLE_ALLOW_SANDBOX:-true}
+    volumes:
+      - ./secrets:/app/secrets:ro
+      - backend_storage:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marcnet
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE_URL=https://api.${DOMAIN:-marctoplu.com}
+        - NEXT_PUBLIC_FIREBASE_API_KEY=${NEXT_PUBLIC_FIREBASE_API_KEY}
+        - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+        - NEXT_PUBLIC_FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID:-marctoplu}
+        - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
+        - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}
+        - NEXT_PUBLIC_FIREBASE_APP_ID=${NEXT_PUBLIC_FIREBASE_APP_ID}
+        - NEXT_PUBLIC_APP_STORE_URL=${NEXT_PUBLIC_APP_STORE_URL:-}
+    container_name: marctoplu_frontend
+    restart: always
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - marcnet
+
+volumes:
+  pgdata:
+  backend_storage:
+  caddy_data:
+  caddy_config:
+
+networks:
+  marcnet:
+    driver: bridge

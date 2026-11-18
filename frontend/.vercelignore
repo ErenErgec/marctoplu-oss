@@ -1,0 +1,7 @@
+# Vercel CLI ile deploy edilirken yüklenmeyecek dosyalar
+.env*
+node_modules
+.next
+tsconfig.tsbuildinfo
+Dockerfile
+CLAUDE.md

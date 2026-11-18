@@ -1,0 +1,45 @@
+{
+    # Global ayarlar
+    email {$ACME_EMAIL:admin@marctoplu.com}
+}
+
+# Frontend Web Uygulaması
+{$DOMAIN} {
+    encode gzip zstd
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    reverse_proxy frontend:3000
+}
+
+# www → ana alan adı (DNS'te www, ana alan adına CNAME)
+www.{$DOMAIN} {
+    redir https://{$DOMAIN}{uri} permanent
+}
+
+# Backend REST API
+api.{$DOMAIN} {
+    encode gzip zstd
+
+    # MARC dosya yükleme ve indirme işlemleri için 50MB limit
+    request_body {
+        max_size 50MB
+    }
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+    }
+
+    reverse_proxy backend:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}

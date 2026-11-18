@@ -1,0 +1,379 @@
+/* Tanıtım sayfası (components/promo/PromoLanding.tsx, yalnızca NEXT_PUBLIC_PROMO_MODE=1) */
+
+.promo-nav .nav-brand {
+  text-decoration: none;
+}
+
+.promo-nav .brand-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-nav-links {
+  display: flex;
+  gap: 4px;
+}
+
+.promo-nav-links a {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.promo-nav-links a:hover {
+  background: var(--surface-subtle);
+  color: var(--text-main);
+}
+
+.promo-nav-cta {
+  padding: 10px 18px;
+}
+
+/* Hero */
+.promo-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  padding: 40px 0 8px;
+}
+
+.promo-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--primary-surface);
+  border: 1px solid var(--primary-border);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.promo-title {
+  margin: 20px 0 18px;
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
+
+.promo-title-accent {
+  color: var(--primary);
+}
+
+.promo-lead {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+
+.promo-stores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.promo-note {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Hero önizleme kartı */
+.promo-preview {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+}
+
+.promo-preview-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--status-success);
+}
+
+.promo-preview-file {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.promo-preview-count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.promo-preview-rows {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.promo-preview-rows li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.promo-preview-isbn {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.promo-preview-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+}
+
+.promo-chip {
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* Bölümler */
+.promo-section {
+  padding: 64px 0 0;
+  scroll-margin-top: 96px;
+}
+
+.promo-section-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.promo-steps,
+.promo-formats {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.promo-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.promo-formats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.promo-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.promo-card h3 {
+  margin: 14px 0 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.promo-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.promo-card-icon {
+  color: var(--primary);
+}
+
+.promo-step-num {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--border-light);
+  line-height: 1;
+}
+
+.promo-ext {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.promo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.promo-link:hover {
+  text-decoration: underline;
+}
+
+/* Ücretlendirme */
+.promo-pricing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.promo-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.promo-checks li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.promo-checks li .icon {
+  color: var(--text-secondary);
+}
+
+.promo-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--status-success-bg);
+  border: 1px solid var(--status-success-border);
+  color: var(--status-success);
+  flex-shrink: 0;
+}
+
+/* Kapanış çağrısı: marka gradyanı iki temada da sabit, metin beyaz */
+.promo-cta {
+  margin-top: 72px;
+  padding: 48px 32px;
+  border-radius: var(--radius-xl);
+  background: var(--primary-gradient);
+  text-align: center;
+  scroll-margin-top: 96px;
+}
+
+.promo-cta h2 {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+.promo-cta p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.promo-cta .promo-stores {
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .promo-formats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .promo-nav-links {
+    display: none;
+  }
+
+  .promo-hero,
+  .promo-pricing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .promo-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .promo-hero {
+    gap: 32px;
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  /* responsive.css panel navbar'ını mobilde dikeye çeviriyor; tanıtımda tek satır kalsın */
+  .promo-nav {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 520px) {
+  .promo-formats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .promo-nav-cta {
+    display: none;
+  }
+
+  .promo-section {
+    padding-top: 48px;
+  }
+
+  .promo-cta {
+    padding: 36px 20px;
+  }
+
+  .promo-cta h2 {
+    font-size: 24px;
+  }
+}

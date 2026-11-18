@@ -1,0 +1,242 @@
+/* Giriş/kayıt split layout ve media query'leri */
+
+/* ==========================================================================
+   SPLIT LAYOUT FOR AUTH PAGES (LOGIN / REGISTER)
+   ========================================================================== */
+
+.split-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-dark);
+}
+
+.split-info-pane {
+  flex: 1;
+  background: linear-gradient(145deg, #7C2D12, #9A3412);
+  color: #FFFFFF;
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.split-info-pane::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.info-content {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.info-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.info-brand img {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.info-brand h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.feature-item h3 {
+  font-size: 19px;
+  font-weight: 600;
+  color: #F8FAFC;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-item h3::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #FDBA74;
+  border-radius: 50%;
+}
+
+.feature-item p {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
+.split-auth-pane {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: var(--bg-card);
+}
+
+.split-auth-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Tablet Landscape Split Layout (900px - 1024px) */
+@media (min-width: 900px) and (max-width: 1024px) {
+  .split-layout {
+    flex-direction: row;
+  }
+
+  .split-info-pane {
+    flex: 0 0 42%;
+    padding: 40px 32px;
+  }
+
+  .info-brand {
+    margin-bottom: 32px;
+  }
+
+  .feature-list {
+    gap: 24px;
+  }
+
+  .feature-item h3 {
+    font-size: 16px;
+  }
+
+  .feature-item p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .split-auth-pane {
+    flex: 0 0 58%;
+    padding: 40px 32px;
+  }
+
+  .split-auth-content {
+    max-width: 380px;
+  }
+}
+
+/* Tablet Portrait Split Layout (768px - 899px) */
+@media (min-width: 768px) and (max-width: 899px) {
+  .split-layout {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .split-info-pane {
+    padding: 30px 36px;
+    flex: none;
+  }
+
+  .split-info-pane::after {
+    display: none;
+  }
+
+  .info-content {
+    max-width: 100%;
+  }
+
+  .info-brand {
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .feature-item h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .feature-item p {
+    font-size: 12px;
+    line-height: 1.4;
+    padding-left: 14px;
+  }
+
+  .split-auth-pane {
+    padding: 36px 32px;
+    flex: 1;
+  }
+
+  .split-auth-content {
+    max-width: 440px;
+  }
+}
+
+/* Mobile Auth Split Layout (< 768px) */
+@media (max-width: 767px) {
+  .split-layout {
+    flex-direction: column;
+  }
+
+  .split-info-pane {
+    padding: 36px 20px;
+    flex: none;
+    align-items: center;
+    text-align: center;
+  }
+
+  .split-info-pane::after {
+    display: none;
+  }
+
+  .info-brand {
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .feature-list {
+    gap: 20px;
+  }
+
+  .feature-item h3 {
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .feature-item h3::before {
+    display: none;
+  }
+
+  .feature-item p {
+    padding-left: 0;
+    font-size: 13px;
+  }
+
+  .split-auth-pane {
+    padding: 32px 20px;
+  }
+}

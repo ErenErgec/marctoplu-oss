@@ -1,0 +1,12 @@
+/*
+ * Global stil giriş noktası. Sıra önemlidir (cascade) — yeni stil eklerken ilgili dosyayı seçin,
+ * sırayı değiştirmeyin. Parça dosyalar styles/ altındadır.
+ */
+@import "./styles/base.css";
+@import "./styles/layout.css";
+@import "./styles/dashboard.css";
+@import "./styles/auth.css";
+@import "./styles/admin.css";
+@import "./styles/responsive.css";
+@import "./styles/auth-split.css";
+@import "./styles/promo.css";

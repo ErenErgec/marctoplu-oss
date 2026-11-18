@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uygulama ikonunun kâğıt dokusuyla aynı krem ton; iOS LaunchScreen ile eşleşir -->
+    <color name="launch_background">#F3EEE8</color>
+</resources>

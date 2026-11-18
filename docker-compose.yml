@@ -1,0 +1,54 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+      - NEXT_PUBLIC_FIREBASE_API_KEY="YOUR_FIREBASE_API_KEY"
+      - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="marctoplu.firebaseapp.com"
+      - NEXT_PUBLIC_FIREBASE_PROJECT_ID="marctoplu"
+      - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="marctoplu.firebasestorage.app"
+      - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="720742633366"
+      - NEXT_PUBLIC_FIREBASE_APP_ID="1:720742633366:web:0f21b2c188157d2fe517b7"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/MarcToken.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/serviceAccountKey.json
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=marctoken;Username=postgres;Password=postgres
+      - App__FrontendUrl=http://localhost:3000
+      - App__PythonExecutable=python3
+      - App__AdminEmails=${ADMIN_EMAILS:-}
+      - Firebase__ProjectId=marctoplu
+      - Iyzico__ApiKey=sandbox-api-key
+      - Iyzico__SecretKey=sandbox-secret
+      - Iyzico__BaseUrl=https://sandbox-api.iyzipay.com
+      - Iyzico__CallbackUrl=http://localhost:8080/api/payments/iyzico/callback
+    depends_on:
+      - postgres
+    volumes:
+      - ./secrets:/app/secrets
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=marctoken
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

@@ -1,0 +1,327 @@
+/* Dokunmatik, tablet ve mobil media query'leri */
+
+/* ==========================================================================
+   TOUCH & INPUT ACCESSIBILITY (Tablets & Mobile <= 1024px)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  /* Prevent iOS Safari from zooming in on input focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
+  /* Smooth momentum scrolling for touch tables and tab bars */
+  .data-table-container,
+  .table-wrap,
+  .admin-nav-links {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+}
+
+/* ==========================================================================
+   TABLET VIEW OPTIMIZATIONS (768px - 1024px)
+   Covers iPad Mini, iPad (10.2"), iPad Air, iPad Pro 11", Android tablets
+   ========================================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .app-container,
+  .admin-layout {
+    padding: 20px 24px 60px;
+    max-width: 100%;
+  }
+
+  /* Tablet Header Navbar: Keep horizontal, compact items */
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    gap: 10px;
+  }
+
+  .nav-brand {
+    font-size: 17px;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav-menu {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-link {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .nav-user-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .nav-user-badge .avatar-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .nav-user-name {
+    max-width: 120px;
+    font-size: 12px;
+  }
+
+  /* Tablet Hero Financial Wallet Card: Clean 2-row layout */
+  .hero-wallet-card {
+    padding: 26px 28px;
+    border-radius: 24px;
+    margin-bottom: 28px;
+  }
+
+  .balance-amount {
+    font-size: 38px;
+    gap: 8px;
+  }
+
+  .wallet-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .wallet-actions .btn-white,
+  .wallet-actions .btn-glass {
+    padding: 11px 20px;
+    font-size: 13px;
+  }
+
+  /* Token Packages on Tablet: 2 balanced columns */
+  .packages-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .package-card {
+    padding: 22px;
+  }
+
+  .package-card h3 {
+    font-size: 18px;
+  }
+
+  /* Panels & Upload Studio on Tablet */
+  .glass-panel {
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 26px;
+  }
+
+  .panel-header {
+    margin-bottom: 18px;
+  }
+
+  .panel-title {
+    font-size: 17px;
+  }
+
+  .dropzone {
+    padding: 34px 20px;
+  }
+
+  .dropzone-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  /* Data Table on Tablet */
+  .data-table-container {
+    border-radius: 14px;
+  }
+
+  .data-table th {
+    padding: 12px 14px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  /* Table action buttons touch target sizes */
+  .data-table td .btn-primary,
+  .data-table td .btn-glass {
+    min-height: 34px;
+    padding: 6px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* Profile page on Tablet */
+  .profile-grid {
+    grid-template-columns: 240px 1fr !important;
+    gap: 20px !important;
+  }
+
+  .profile-form-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Admin Dashboard on Tablet */
+  .admin-nav {
+    padding: 12px 18px;
+    margin-bottom: 24px;
+  }
+
+  .admin-nav-inner {
+    gap: 12px;
+  }
+
+  .admin-nav-links {
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px;
+  }
+
+  .admin-nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-nav-links button {
+    padding: 8px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .admin-stat-card {
+    padding: 18px;
+  }
+
+  .admin-stat-value {
+    font-size: 24px;
+  }
+
+  .admin-token-form-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px;
+  }
+
+  .admin-token-form-grid > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .checkout-card {
+    padding: 28px 24px;
+    border-radius: 24px;
+  }
+
+  /* Modals on Tablet */
+  .modal-card {
+    max-width: 520px;
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 28px 24px;
+    border-radius: 22px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE PHONES (< 768px)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+  .nav-user-badge {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+  .nav-user-name {
+    display: none;
+  }
+  .packages-grid {
+    grid-template-columns: 1fr;
+  }
+  .data-table-container {
+    font-size: 13px;
+  }
+  .data-table th, .data-table td {
+    padding: 10px 12px;
+  }
+  .hero-wallet-card {
+    padding: 20px;
+  }
+  .balance-amount {
+    font-size: 32px;
+  }
+  .hero-wallet-card .btn-white {
+    width: 100%;
+    justify-content: center;
+  }
+  .glass-panel {
+    padding: 18px;
+    border-radius: 18px;
+  }
+  .checkout-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+  .profile-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .profile-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-token-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .modal-card {
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px 12px 40px;
+  }
+  .navbar {
+    border-radius: 14px;
+    top: 8px;
+  }
+  .hero-wallet-card {
+    border-radius: 20px;
+  }
+}

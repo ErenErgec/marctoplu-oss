@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "720742633366",
+    "project_id": "marctoplu",
+    "storage_bucket": "marctoplu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720742633366:android:cc5301ada6a9aad4e517b7",
+        "android_client_info": {
+          "package_name": "com.marctoplu.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720742633366-74j9bs1cg3kgu5n2d78rqittlcqd209m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marctoplu.app",
+            "certificate_hash": "30d062a805f3161f21ef9df601cabded13a4c1e2"
+          }
+        },
+        {
+          "client_id": "720742633366-k5or69jgire8f0ug7vlnof4pg4dcq6dd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marctoplu.app",
+            "certificate_hash": "5748d41b0fc31aa9f91f7fbbb627b5e67d5ab1d4"
+          }
+        },
+        {
+          "client_id": "720742633366-ld45gi6up5r7kg4b5vmr6fdu89go5shh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marctoplu.app",
+            "certificate_hash": "5e73a2cbdff9b4a3edb58b8d86739aab27a8c585"
+          }
+        },
+        {
+          "client_id": "720742633366-568v9v4dgrht2shgbkhgsqludbhl6du4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "YOUR_FIREBASE_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720742633366-568v9v4dgrht2shgbkhgsqludbhl6du4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "720742633366-7cdtnb51blkvur4685kcgri17pv4g7q1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.marctoplu.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
