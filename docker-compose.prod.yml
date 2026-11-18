@@ -58,6 +58,8 @@ services:
       - Iyzico__BaseUrl=${IYZICO_BASE_URL:-https://api.iyzipay.com}
       - Iyzico__CallbackUrl=${IYZICO_CALLBACK_URL:-}
       # Uygulama içi satın alma doğrulaması (zorunlu: eksikse satın almalar reddedilir)
+      - Iap__GooglePlayPackageName=${IAP_GOOGLE_PLAY_PACKAGE_NAME:-com.marctoplu.app}
+      - Iap__AppleBundleId=${IAP_APPLE_BUNDLE_ID:-com.marctoplu.app}
       - Iap__GoogleServiceAccountPath=${IAP_GOOGLE_SERVICE_ACCOUNT_PATH:-/app/secrets/play-service-account.json}
       - Iap__AppleIssuerId=${IAP_APPLE_ISSUER_ID:-}
       - Iap__AppleKeyId=${IAP_APPLE_KEY_ID:-}

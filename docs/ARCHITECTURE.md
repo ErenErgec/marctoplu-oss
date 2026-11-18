@@ -56,8 +56,7 @@ Refactor sırasında fark edildi, davranış değiştirilmedi:
 - App Store yanıtındaki `signedTransactionInfo` JWS imzası Apple kök sertifikasına karşı doğrulanmıyor. Yanıt, kimliği doğrulanmış TLS isteğiyle doğrudan Apple'dan alındığı için kabul edilebilir.
 - `AppleAllowSandbox=true` iken TestFlight kullanıcıları sandbox'ta ücretsiz satın alma yapıp gerçek token alabilir. App Review için gerekli; TestFlight grubunu dar tutun.
 - `Migrations/20260908130000_AddEmailToUserProfile.cs` dosyasının `.Designer.cs` eşi yok, bu yüzden EF onu görmüyor. Sütun `Program.cs`'teki `ALTER ... IF NOT EXISTS` ile eklenir. `20260925..._AddSupportTickets` snapshot'ı bu sütunla hizaladı (yine `IF NOT EXISTS` ile).
-- Bulunamayan ISBN'ler de token tüketir (`consumed = processed × cost`). Web metinleri buna göre yazıldı. İade politikası değişirse login/register metnini de güncelleyin.
 - Mobilde `TokenWalletPage` hiçbir yerden açılmıyor (ölü kod).
 - `job_runner.py` motoru göreli yolla (`../../../engine`) buluyor. Klasör yapısı değişirse kırılır.
-- Frontend lint: `login` ve `register` sayfalarında `react/no-unescaped-entities` hatası var.
-- Otomatik test yok (backend ve frontend); mobilde yalnızca smoke test var.
+- Frontend lint hatasız geçer; yalnızca `<img>` kullanımı için `@next/next/no-img-element` uyarıları var.
+- Backend ve frontend için otomatik test yok; motorun birim testleri `engine/tests/` altında, mobilde yalnızca smoke test var.

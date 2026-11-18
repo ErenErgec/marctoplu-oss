@@ -13,6 +13,6 @@ Kaynak kod [AGPL-3.0](LICENSE) ile lisanslıdır. Ancak bu lisans **"MARCTOPLU" 
 - Uygulama mağazalarında (App Store, Google Play) bu ad, logo veya benzer simgelerle uygulama yayınlamak.
 - Kullanıcılarda resmi hizmet ([marctoplu.com](https://marctoplu.com)) ile ilişkili olduğunuz izlenimini yaratmak.
 
-Kendi hizmetinizi yayınlayacaksanız lütfen farklı bir ad ve logo kullanın; `frontend/public/` ve `marctoplu_mobile/` altındaki görselleri değiştirin.
+Kendi hizmetinizi yayınlayacaksanız lütfen farklı bir ad ve logo kullanın. Değiştirmeniz gereken görseller: `frontend/public/`, `frontend/app/` altındaki `icon.png`, `apple-icon.png`, `favicon.ico`, `opengraph-image.png` ve `marctoplu_mobile/` altındaki `assets/`, `play_store_assets/` ile platform uygulama simgeleri. Uygulama adı ve kimliği için [marctoplu_mobile/README.md](marctoplu_mobile/README.md) dosyasına bakın.
 
 Sorular için: [info@marctoplu.com](mailto:info@marctoplu.com)

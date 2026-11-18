@@ -96,7 +96,7 @@ export default function LoginPage() {
             
             <div className="feature-item">
               <h3>Kredi (Token) Sistemi</h3>
-              <p>Yalnızca bulunan kayıtlar için ödeme yapın: bulunamayan ISBN'lerin ve çıktısı oluşmayan işlerin tokeni otomatik iade edilir.</p>
+              <p>Yalnızca bulunan kayıtlar için ödeme yapın: bulunamayan ISBN&apos;lerin ve çıktısı oluşmayan işlerin tokeni otomatik iade edilir.</p>
             </div>
             
             <div className="feature-item">

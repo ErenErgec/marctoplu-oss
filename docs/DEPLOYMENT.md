@@ -17,12 +17,15 @@ Bu rehber, kiralayacağınız bir **Linux Sunucu (VPS/VDS)** ve **Domain (Alan A
 
 ## 2. Alan Adı (DNS) Yapılandırması
 
-Domain sağlayıcınızın (GoDaddy, Namecheap, Metunic, Cloudflare vb.) DNS yönetim paneline girerek aşağıdaki **2 adet A Kaydı**'nı ekleyin:
+Domain sağlayıcınızın (GoDaddy, Namecheap, Metunic, Cloudflare vb.) DNS yönetim paneline girerek aşağıdaki kayıtları ekleyin:
 
 | Tür | Ad (Host) | Değer (Değer / IP) | TTL | Açıklama |
 |---|---|---|---|---|
-| **A** | `@` *(veya alan adınız)* | `SUNUCU_IP_ADRESINIZ` | Otomatik / 300 | Ana site (`marctoplu.com`) |
-| **A** | `api` | `SUNUCU_IP_ADRESINIZ` | Otomatik / 300 | Mobil API (`api.marctoplu.com`) |
+| **A** | `@` *(veya alan adınız)* | `SUNUCU_IP_ADRESINIZ` | Otomatik / 300 | Web sitesi (`alanadiniz.com`) |
+| **A** | `api` | `SUNUCU_IP_ADRESINIZ` | Otomatik / 300 | API (`api.alanadiniz.com`) |
+| **CNAME** | `www` | `alanadiniz.com` | Otomatik / 300 | `www` → ana alan adına yönlendirme |
+
+`Caddyfile` üç ad için de sertifika alır; `www` kaydını eklemezseniz Caddy loglarında `www.alanadiniz.com` için sertifika hatası görürsünüz.
 
 > [!NOTE]
 > DNS kayıtlarının tüm dünyada yayılması (propagation) genellikle 5-15 dakika sürer.
@@ -115,9 +118,10 @@ docker compose version
 ### 4.1. Repoyu Klonlayın
 ```bash
 cd /opt
-git clone https://github.com/ErenErgec/MARCTOPLU.git
+git clone https://github.com/ErenErgec/marctoplu-oss.git MARCTOPLU
 cd MARCTOPLU
 ```
+Kendi çatalınızı (fork) kullanıyorsanız onun adresini yazın. Bu rehberdeki yollar `/opt/MARCTOPLU` klasörünü varsayar.
 
 ### 4.2. Çevre Değişkenlerini (`.env`) Ayarlayın
 ```bash
@@ -128,7 +132,10 @@ Dosyada şu alanları güncelleyin:
 - `DOMAIN=alanadiniz.com`
 - `ACME_EMAIL=epostaniz@domain.com`
 - `POSTGRES_PASSWORD=<uzun-rastgele-sifre>` (örn. `openssl rand -base64 32` çıktısı)
-- `NEXT_PUBLIC_APP_STORE_URL=https://apps.apple.com/app/marctoplu/id<APP_ID>` (App Store Connect'teki Apple ID; uygulama App Store'da yayında değilken boş bırakın. Boşken web'deki App Store butonları gizlenir ve iPhone/iPad'de uygulama karşılaması gösterilmez. Build sırasında gömüldüğü için değiştirince `frontend` yeniden build edilmeli)
+- `FIREBASE_PROJECT_ID` ve `NEXT_PUBLIC_FIREBASE_*` (5 adet): Firebase Console → Proje Ayarları → Genel → Web uygulaması yapılandırması. Firebase Authentication → Ayarlar → **Yetkili alan adları** listesine `alanadiniz.com` ekleyin; yoksa web'de Google girişi çalışmaz.
+- `ADMIN_EMAILS`: admin paneline girecek e-posta adresleri
+- `NEXT_PUBLIC_APP_STORE_URL=https://apps.apple.com/app/uygulamaniz/id<APP_ID>` (App Store Connect'teki Apple ID; uygulama App Store'da yayında değilken boş bırakın. Boşken web'deki App Store butonları gizlenir ve iPhone/iPad'de uygulama karşılaması gösterilmez. Build sırasında gömüldüğü için değiştirince `frontend` yeniden build edilmeli)
+- Mobil satın alma kullanacaksanız `IAP_*` değerleri: bkz. §9
 *(Kaydedip çıkmak için: `CTRL+O`, `ENTER`, `CTRL+X`)*
 
 ### 4.3. Firebase Servis Hesabı Anahtarını Ekleyin
@@ -143,9 +150,10 @@ nano secrets/serviceAccountKey.json
 
 ## 5. Sistemi Başlatma (Canlıya Alma)
 
-Hazırladığımız dağıtım betiğini çalıştırın:
+Hazırladığımız dağıtım betiğini çalıştırın. İlk kurulumda `--init` 4 GB swap alanı oluşturur ve UFW kurallarını (3.1 ile aynı) uygular; sonraki güncellemelerde parametresiz çalıştırın:
 ```bash
-./scripts/deploy-server.sh
+./scripts/deploy-server.sh --init   # ilk kurulum
+./scripts/deploy-server.sh          # sonraki güncellemeler: git pull && ./scripts/deploy-server.sh
 ```
 
 Bu betik otomatik olarak:
@@ -170,14 +178,15 @@ docker compose -f docker-compose.prod.yml logs -f backend
 ## 6. Doğrulama ve Test
 
 Tarayıcınızdan şu adresleri kontrol edin:
-- `https://api.alanadiniz.com/health` -> `Healthy` yanıtı ve yeşil SSL kilidi görmelisiniz.
+- `https://api.alanadiniz.com/health` -> `{"status":"ok"}` yanıtı ve yeşil SSL kilidi görmelisiniz.
+- `https://api.alanadiniz.com/health/ready` -> `{"status":"ready"}` (veritabanı bağlantısı çalışıyor).
 - `https://alanadiniz.com` -> Web arayüzünün başarıyla açıldığını görmelisiniz.
 
 ---
 
 ## 7. Mobil Uygulamayı Canlı Sunucuyla Derleme
 
-Sunucunuz ayağa kalktıktan sonra, mobil uygulamanızı yeni API adresinizle derleyin:
+Sunucunuz ayağa kalktıktan sonra, mobil uygulamanızı yeni API adresinizle derleyin. Kendi Firebase projenizi, uygulama kimliğinizi ve mağaza ürünlerinizi ayarlamak için önce [marctoplu_mobile/README.md](../marctoplu_mobile/README.md) → "Kendi kurulumunuz için" bölümünü uygulayın.
 
 ### Android Release APK / AppBundle:
 ```bash
@@ -212,7 +221,7 @@ En alta şu satırı ekleyin (Her gece saat 03:00'da yedeği `/opt/backups` klas
 Backend, mobil satın almaları kredi yüklemeden önce Google Play ve App Store'da doğrular. **Bir platformun anahtarı sunucuda yoksa o platformdaki satın almalar reddedilir** (kullanıcı "daha sonra tekrar denenecek" mesajı görür, ödemesi tüketilmez). Bu yüzden anahtarları IAP doğrulamalı sürümü deploy etmeden **önce** sunucuya koyun.
 
 ### 9.1. Android (Google Play)
-1. Google Cloud Console'da (Firebase projesi `marctoplu` ya da ayrı bir proje) **Google Play Android Developer API**'yi etkinleştirin.
+1. Google Cloud Console'da (Firebase projeniz ya da ayrı bir proje) **Google Play Android Developer API**'yi etkinleştirin.
 2. Bir service account oluşturup JSON anahtarını indirin (mevcut Firebase service account da kullanılabilir).
 3. Play Console → **Kullanıcılar ve izinler** → service account e-postasını davet edin. Uygulama izni olarak **"Finansal verileri, siparişleri ve iptal anketi yanıtlarını görüntüleme"** yetkisini verin. Yetkinin etkinleşmesi birkaç saat sürebilir.
 4. JSON dosyasını sunucuya koyun:
@@ -230,6 +239,8 @@ Backend, mobil satın almaları kredi yüklemeden önce Google Play ve App Store
 
 ### 9.3. `.env` değişkenleri
 ```bash
+IAP_GOOGLE_PLAY_PACKAGE_NAME=com.ornek.uygulama   # mobil uygulamanızın paket adı (varsayılan com.marctoplu.app)
+IAP_APPLE_BUNDLE_ID=com.ornek.uygulama            # mobil uygulamanızın bundle ID'si (varsayılan com.marctoplu.app)
 IAP_GOOGLE_SERVICE_ACCOUNT_PATH=/app/secrets/play-service-account.json
 IAP_APPLE_ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 IAP_APPLE_KEY_ID=XXXXXXXXXX
@@ -251,13 +262,13 @@ docker compose -f docker-compose.prod.yml logs backend | grep '\[IAP\]'
 **Android (Real-time Developer Notifications):**
 1. Google Cloud Console → **Pub/Sub** → bir konu (topic) oluşturun, örn. `play-rtdn`.
 2. Konunun izinlerine `google-play-developer-notifications@system.gserviceaccount.com` hesabını **Pub/Sub Publisher** rolüyle ekleyin.
-3. Konuya bir **push** aboneliği ekleyin. Uç nokta: `https://api.marctoplu.com/api/payments/iap/webhooks/google`.
+3. Konuya bir **push** aboneliği ekleyin. Uç nokta: `https://api.alanadiniz.com/api/payments/iap/webhooks/google`.
 4. Play Console → **Para kazanma kurulumu → Google Play Faturalandırma** → **Gerçek zamanlı geliştirici bildirimleri**: konu adını girin (`projects/<proje-id>/topics/play-rtdn`). Bildirim içeriği olarak **iptal edilen satın almaları da** kapsayan seçeneği seçin, örn. "Abonelikler, iptal edilen satın almalar ve tüm tek seferlik ürünler".
 5. Aynı sayfadaki **Test bildirimi gönder** ile bağlantıyı deneyin. Backend logunda "Google Play test bildirimi alındı" görünmeli.
 
 **iOS (App Store Server Notifications V2):**
 1. App Store Connect → Uygulama → **Uygulama Bilgileri → App Store Sunucu Bildirimleri**.
-2. Hem **Üretim** hem **Sandbox** sunucu URL'sine `https://api.marctoplu.com/api/payments/iap/webhooks/apple` yazın, sürüm **Version 2**.
+2. Hem **Üretim** hem **Sandbox** sunucu URL'sine `https://api.alanadiniz.com/api/payments/iap/webhooks/apple` yazın, sürüm **Version 2**.
 
 Kontrol:
 ```bash
@@ -269,7 +280,7 @@ Mağaza API'sine ulaşılamazsa uç nokta 503 döner ve mağaza bildirimi tekrar
 
 ## 10. Sunucu Kapalıyken Vercel'de Tanıtım Sitesi
 
-VPS kapalıyken `marctoplu.com` yalnızca bir vitrin olarak Vercel'den yayınlanabilir. Bunun için frontend **tanıtım modunda** (`NEXT_PUBLIC_PROMO_MODE=1`) derlenir:
+VPS kapalıyken alan adınız yalnızca bir vitrin olarak Vercel'den yayınlanabilir. Bunun için frontend **tanıtım modunda** (`NEXT_PUBLIC_PROMO_MODE=1`) derlenir:
 
 - `/` herkese açık tanıtım sayfasını gösterir (`components/promo/PromoLanding.tsx`). Firebase ya da API çağrısı yapılmaz.
 - `/login`, `/register`, `/profile`, `/admin`, `/checkout/*` geçici olarak (307) `/`'e yönlenir (`next.config.mjs`).
@@ -282,12 +293,12 @@ VPS kapalıyken `marctoplu.com` yalnızca bir vitrin olarak Vercel'den yayınlan
    | Anahtar | Değer |
    |---|---|
    | `NEXT_PUBLIC_PROMO_MODE` | `1` |
-   | `NEXT_PUBLIC_FIREBASE_*` (6 adet) | `frontend/.env.local.example` ile aynı |
+   | `NEXT_PUBLIC_FIREBASE_*` (6 adet) | Firebase web uygulaması yapılandırmanız (sunucudaki `.env` ile aynı) |
    | `NEXT_PUBLIC_APP_STORE_URL` | (İsteğe bağlı) App Store linki; boşsa buton gizlenir |
 4. **Production Branch:** `main`. `main`'e her push Vercel'de yeni bir deploy başlatır.
 
 ### 10.2. Alan adı
-1. Vercel projesi → **Settings → Domains** → `marctoplu.com` ve `www.marctoplu.com` ekleyin.
+1. Vercel projesi → **Settings → Domains** → `alanadiniz.com` ve `www.alanadiniz.com` ekleyin.
 2. DNS panelinde, Vercel'in o ekranda gösterdiği kayıtları girin. Genelde şunlardır:
    | Tür | Ad | Değer |
    |---|---|---|
@@ -297,7 +308,7 @@ VPS kapalıyken `marctoplu.com` yalnızca bir vitrin olarak Vercel'den yayınlan
 4. SSL sertifikasını Vercel kendisi alır. DNS yayıldıktan sonra Domains ekranında yeşil tik görünür.
 
 ### 10.3. Sunucuya geri dönüş
-1. DNS'te `@` ve `api` A kayıtlarını VPS IP'sine çevirin, `www` kaydını `marctoplu.com`'a CNAME yapın. Caddy `www`'yu ana alan adına yönlendirir ve onun için de sertifika alır.
+1. DNS'te `@` ve `api` A kayıtlarını VPS IP'sine çevirin, `www` kaydını ana alan adınıza CNAME yapın. Caddy `www`'yu ana alan adına yönlendirir ve onun için de sertifika alır.
 2. Vercel'de domaini kaldırın (veya projeyi silin). Böylece iki yer aynı domain için sertifika almaya çalışmaz.
 3. Sunucuda `./scripts/deploy-server.sh` çalıştırın. Caddy, DNS VPS'e döndükten sonra sertifikayı yeniden alır.
 4. Docker build'i `NEXT_PUBLIC_PROMO_MODE` vermediği için sunucudaki site normal panel olarak açılır.
